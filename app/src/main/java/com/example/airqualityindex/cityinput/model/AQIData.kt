@@ -11,6 +11,11 @@ data class AQIData(
     val forecast: Forecast
 )
 
+data class CityData(
+    val name: String,
+    val geo: List<Double>
+)
+
 data class Forecast(
     val daily: Daily
 )

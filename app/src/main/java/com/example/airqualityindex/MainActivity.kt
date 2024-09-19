@@ -18,14 +18,10 @@ import com.example.airqualityindex.cityinput.model.service.AQIApiClient
 import com.example.airqualityindex.cityinput.view.CityInputScreen
 import com.example.airqualityindex.cityinput.viewmodel.CityInputViewModel
 import com.example.airqualityindex.location.LocationHandler
+import com.example.airqualityindex.navigation.AQIApp
 import com.example.airqualityindex.ui.theme.AirQualityIndexTheme
 
 class MainActivity : ComponentActivity() {
-
-    private val viewModel = CityInputViewModel(
-        AQIApiClient.service,
-        LocationHandler(this)
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +32,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CityInputScreen(viewModel = viewModel)
+                    AQIApp(
+                        apiService = AQIApiClient.service,
+                        locationHandler = LocationHandler(this)
+                    )
                 }
             }
         }
