@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.airqualityindex.aqidisplay.model.AQIDisplayData
+import com.example.airqualityindex.aqidisplay.model.GeoLocation
 import com.example.airqualityindex.aqidisplay.model.PmForecast
 import com.example.airqualityindex.aqidisplay.viewmodel.AQIDisplayState
 import com.example.airqualityindex.aqidisplay.viewmodel.AQIDisplayViewModel
@@ -74,6 +75,7 @@ fun PreviewAQIDisplay() {
     val aqiDisplayData = AQIDisplayData(
         aqi = 15,
         stationName = "Philadelphia",
+        geoLocation = GeoLocation(null, -75.126126),
         currentForecast = PmForecast(null, null),
         previousForecast = PmForecast(20, 25),
         futureForecast = PmForecast(30, 35)
@@ -95,6 +97,9 @@ fun AQIBox(aqiData: AQIDisplayData) {
             Spacer(modifier = Modifier.height(16.dp))
             Text("AQI: ${aqiData.aqi}", style = MaterialTheme.typography.displayLarge)
             Text("Station: ${aqiData.stationName}", style = MaterialTheme.typography.titleSmall)
+            Text("Location: ${aqiData.geoLocation.latitude ?: "n/a"}, ${aqiData.geoLocation.longitude ?: "n/a"}", style = MaterialTheme.typography.bodyMedium)
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row{
                 ForecastItem(

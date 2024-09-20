@@ -9,6 +9,7 @@ import java.time.LocalDate
 data class AQIDisplayData(
     val aqi: Int,
     val stationName: String,
+    val geoLocation: GeoLocation,
     val currentForecast: PmForecast,
     val previousForecast: PmForecast,
     val futureForecast: PmForecast
@@ -26,6 +27,12 @@ data class AQIDisplayData(
     }
 
 }
+
+@Serializable
+data class GeoLocation(
+    val latitude: Double?,
+    val longitude: Double?
+)
 
 @Serializable
 data class PmForecast(
@@ -61,9 +68,16 @@ fun AQIData.toAQIDisplayData(): AQIDisplayData {
         pm10 = pm10ForecastsByDay[yesterday]?.avg
     )
 
+    val geoLocation = if (this.city.geo.size == 2) {
+        GeoLocation(this.city.geo[0], this.city.geo[1])
+    } else {
+        GeoLocation(null, null)
+    }
+
     return AQIDisplayData(
         this.aqi,
         this.city.name,
+        geoLocation,
         currentForecast,
         previousForecast,
         futureForecast
