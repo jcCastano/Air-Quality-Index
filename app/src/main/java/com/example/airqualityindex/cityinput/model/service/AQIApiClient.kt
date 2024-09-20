@@ -15,6 +15,7 @@ object AQIApiClient {
 
         val gson = GsonBuilder()
             .registerTypeAdapter(LocalDate::class.java, LocalDateDeserializer())
+            .registerTypeAdapter(AQIResult::class.java, AQIResultDeserializer())
             .create()
 
         val okHttpClient = OkHttpClient.Builder()
