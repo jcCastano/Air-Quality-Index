@@ -10,6 +10,10 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
+enum class LocationStatus {
+    SUCCESS, PERMISSION_DENIED, ERROR
+}
+
 class LocationHandler(private val activity: ComponentActivity) {
 
     companion object {
@@ -17,7 +21,7 @@ class LocationHandler(private val activity: ComponentActivity) {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
     }
 
-    private var locationCallback: ((Location?) -> Unit)? = null
+    private var locationCallback: ((LocationStatus, Location?, message: String) -> Unit)? = null
     private val fusedLocationClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(activity) }
     private val requestPermissionLauncher = activity.registerForActivityResult(ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -25,11 +29,12 @@ class LocationHandler(private val activity: ComponentActivity) {
             fetchLocation()
         } else {
             Log.d(TAG, "Location permission denied")
+            locationCallback?.invoke(LocationStatus.PERMISSION_DENIED, null, "Location Permission Denied")
         }
     }
 
     // Public method to get current location
-    fun getCurrentLocation(callback: (Location?) -> Unit) {
+    fun getCurrentLocation(callback: (LocationStatus, Location?, message: String) -> Unit) {
         locationCallback = callback
 
         when {
@@ -48,7 +53,7 @@ class LocationHandler(private val activity: ComponentActivity) {
             fetchLocation()
         } else {
             // Handle permission denied case
-            locationCallback?.invoke(null)
+            locationCallback?.invoke(LocationStatus.ERROR, null, "Location permission denied")
         }
     }
 
@@ -57,7 +62,7 @@ class LocationHandler(private val activity: ComponentActivity) {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                locationCallback?.invoke(location)
+                locationCallback?.invoke(LocationStatus.SUCCESS, location, "")
             }
         }
     }

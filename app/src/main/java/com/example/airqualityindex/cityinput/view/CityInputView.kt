@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
+import com.example.airqualityindex.cityinput.viewmodel.CityInputErrorType
 import com.example.airqualityindex.cityinput.viewmodel.CityInputState
 import com.example.airqualityindex.cityinput.viewmodel.CityInputViewModel
 import kotlinx.serialization.Serializable
@@ -36,6 +40,7 @@ fun CityInputScreen(
 ) {
     val viewState by viewModel.state.collectAsState()
     val context = LocalContext.current
+    
     when(viewState) {
         CityInputState.Loading -> {
             Box(
@@ -52,7 +57,19 @@ fun CityInputScreen(
 
             if (viewState is CityInputState.Error) {
                 val errorState = viewState as CityInputState.Error
-                Toast.makeText(context, errorState.message, Toast.LENGTH_SHORT).show()
+
+                when (errorState.type) {
+                    CityInputErrorType.TOAST -> {
+                        Toast.makeText(context, errorState.message, Toast.LENGTH_SHORT).show()
+                    }
+                    CityInputErrorType.ALERT -> {
+                        ShowAlertDialog(
+                            title = errorState.title,
+                            message = errorState.message,
+                            showAlert = true
+                        )
+                    }
+                }
             }
         }
         is CityInputState.Success -> {
@@ -84,5 +101,32 @@ fun CityInputContent(onSubmit: (String?) -> Unit) {
         Button(onClick = { onSubmit(cityName) }) {
             Text("Get AQI")
         }
+    }
+}
+
+@Composable
+fun ShowAlertDialog(title: String, message: String, showAlert: Boolean) {
+    var showDialog by remember { mutableStateOf(showAlert) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { 
+                showDialog = false
+            },
+            title = {
+                Text(text = title)
+            },
+            text = {
+                Text(text = message)
+            },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
+                }) {
+                    Text(text = "Dismiss")
+                }
+            },
+            properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+        )
     }
 }
