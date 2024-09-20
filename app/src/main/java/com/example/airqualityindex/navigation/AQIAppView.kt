@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.airqualityindex.aqidisplay.model.AQIDisplayData
 import com.example.airqualityindex.aqidisplay.view.AQIDisplayScreen
 import com.example.airqualityindex.aqidisplay.view.NavAQIDisplay
 import com.example.airqualityindex.aqidisplay.viewmodel.AQIDisplayViewModel
@@ -28,7 +29,7 @@ fun AQIApp(apiService: AQIApiService, locationHandler: LocationHandler) {
         composable<NavAQIDisplay> {backStackEntry ->
             val args = backStackEntry.toRoute<NavAQIDisplay>()
             val viewModel = AQIDisplayViewModel()
-            viewModel.displayAQIData(args.aqi, args.stationName)
+            viewModel.displayAQIData(AQIDisplayData.fromJson(args.aqiJson))
             AQIDisplayScreen(viewModel = viewModel, navController = navController)
         }
     }

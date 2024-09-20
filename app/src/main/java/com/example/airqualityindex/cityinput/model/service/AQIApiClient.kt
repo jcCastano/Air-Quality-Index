@@ -1,9 +1,10 @@
 package com.example.airqualityindex.cityinput.model.service
 
-import android.media.session.MediaSession.Token
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
 
 object AQIApiClient {
 
@@ -12,6 +13,10 @@ object AQIApiClient {
 
     private val retrofit: Retrofit by lazy {
 
+        val gson = GsonBuilder()
+            .registerTypeAdapter(LocalDate::class.java, LocalDateDeserializer())
+            .create()
+
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(TOKEN))
             .build()
@@ -19,7 +24,7 @@ object AQIApiClient {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 

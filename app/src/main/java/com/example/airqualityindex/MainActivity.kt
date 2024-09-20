@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val locationHandler = LocationHandler(this)
         setContent {
             AirQualityIndexTheme {
                 // A surface container using the 'background' color from the theme
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     AQIApp(
                         apiService = AQIApiClient.service,
-                        locationHandler = LocationHandler(this)
+                        locationHandler = locationHandler
                     )
                 }
             }

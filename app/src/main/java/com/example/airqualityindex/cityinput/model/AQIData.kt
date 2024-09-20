@@ -1,5 +1,8 @@
 package com.example.airqualityindex.cityinput.model
 
+import java.time.LocalDate
+import java.util.Date
+
 data class AQIResponse(
     val status: String,
     val data: AQIData
@@ -27,5 +30,5 @@ data class Daily(
 
 data class Pollutant(
     val avg: Int,
-    val day: String
+    val day: LocalDate
 )

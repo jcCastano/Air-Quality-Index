@@ -19,14 +19,12 @@ class LocationHandler(private val activity: ComponentActivity) {
 
     private var locationCallback: ((Location?) -> Unit)? = null
     private val fusedLocationClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(activity) }
-    private val requestPermissionLauncher by lazy {
-        activity.registerForActivityResult(ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                fetchLocation()
-            } else {
-                Log.d(TAG, "Location permission denied")
-            }
+    private val requestPermissionLauncher = activity.registerForActivityResult(ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            fetchLocation()
+        } else {
+            Log.d(TAG, "Location permission denied")
         }
     }
 

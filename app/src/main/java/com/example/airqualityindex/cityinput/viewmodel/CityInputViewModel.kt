@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.airqualityindex.aqidisplay.model.toAQIDisplayData
 import com.example.airqualityindex.aqidisplay.view.NavAQIDisplay
 import com.example.airqualityindex.cityinput.model.AQIResponse
 import com.example.airqualityindex.cityinput.model.service.AQIApiService
@@ -72,7 +73,7 @@ class CityInputViewModel(
     private fun handleResponse(response: Response<AQIResponse>) {
         if (response.isSuccessful && response.body() != null) {
             response.body()?.let { body ->
-                navController.navigate(NavAQIDisplay(body.data.aqi, body.data.city.name))
+                navController.navigate(NavAQIDisplay(body.data.toAQIDisplayData().toJson()))
             }
         } else {
             _state.value = CityInputState.Error("Failed to fetch AQI data")

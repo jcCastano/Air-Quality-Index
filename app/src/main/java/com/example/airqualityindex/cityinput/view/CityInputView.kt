@@ -2,6 +2,7 @@ package com.example.airqualityindex.cityinput.view
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,7 +38,12 @@ fun CityInputScreen(
     val context = LocalContext.current
     when(viewState) {
         CityInputState.Loading -> {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
         CityInputState.Idle, is CityInputState.Error -> {
             CityInputContent { cityName ->
