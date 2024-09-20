@@ -13,6 +13,10 @@ squareOkhttp = "4.12.0"
 playServicesLocation = "21.3.0"
 navigationCompose = "2.8.0"
 serialization = "1.6.3"
+mockito = "5.13.0"
+mockito-kotlin = "5.4.0"
+kotlin-coroutines-test = "1.9.0"
+androidx-testing = "2.1.0"
 
 
 [libraries]
@@ -36,6 +40,10 @@ squareup-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito"}
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin"}
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines-test"}
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-testing"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
